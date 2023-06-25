@@ -1,0 +1,17 @@
+function y=Pb(sigma,K,a,c,bl,br,tauj,condition_boundary,pt,qt)
+s=0;
+sb=@(x) sigma_bar(sigma,x,bl,br);
+gl1=gl(condition_boundary,a,c);
+gr1=gr(condition_boundary,a,c);
+phi_r1=phi_r(pt,qt,condition_boundary,a,c);
+phi_l1=phi_l(pt,qt,condition_boundary,a,c);
+s=s+sb(tauj);
+f1=@(x) gl1(x)*sb(x);
+che1=chebyshev_coefficient(f1,bl,br,K);
+che11=left_spectral_integration(che1);
+s=s+phi_l1(tauj)*sigma_bar(che11,tauj,bl,br);
+f2=@(x) gr1(x)*sb(x);
+che2=chebyshev_coefficient(f2,bl,br,K);
+che21=right_spectral_integration(che2);
+s=s+phi_r1(tauj)*sigma_bar(che21,tauj,bl,br);
+y=s;
